@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Variable:
     def __init__(self, data):
         self.data = data
@@ -22,11 +25,3 @@ class Square(Function):
 class Exp(Function):
     def forward(self, x):
         return np.exp(x)
-
-
-import numpy as np
-x = Variable(np.array(10))
-f = Function()
-y = f(x)
-
-print(y.data)
