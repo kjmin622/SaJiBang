@@ -4,9 +4,8 @@
 #include<string.h>
 using namespace std;
 
-//21.5.23 틀린 TC를 못찾겠다...
 
-int map[50][50], dir[4][2]={{1,0},{-1,0},{0,1},{0,-1}}, n, m, minn = 2e7; bool lab[50][50];
+int map[50][50], dir[4][2]={{1,0},{-1,0},{0,1},{0,-1}}, n, m, ep=0, minn = 2e7, lab[50][50];
 queue<pair<int,int> > bfs,bbfs;
 vector<int> ord;
 vector<vector<int> > order;
@@ -14,63 +13,30 @@ vector<pair<int,int> > birus;
 
 void combi(int N, int r){
 	if(r==0){
-		memset(lab,false,sizeof(lab));
-		int anss=0;
+		memset(lab,-1,sizeof(lab));
+		int pbirus=0, anss=0;
+		
 		for(int i : ord){
 			int x=birus[i].first,y=birus[i].second;
 			bfs.push({x,y});
-			lab[x][y]=true; 
+			lab[x][y]=0;
 		}
 		
 		while(!bfs.empty()){
-			int si = bfs.size();
-			while(si--){
-				int fn=bfs.front().first, sn=bfs.front().second;
-				bfs.pop();
-				for(int i=0; i<4; i++){
-					int nfn=fn+dir[i][0],nsn=sn+dir[i][1];
-					if(nfn<0 || nsn<0 || nfn>=n || nsn>=n || lab[nfn][nsn] || map[nfn][nsn]==1) continue;
-					lab[nfn][nsn]=true;
-					if(map[nfn][nsn]==2) bbfs.push({nfn,nsn});
-					else bfs.push({nfn,nsn});
+			int fn = bfs.front().first, sn = bfs.front().second;
+			bfs.pop();
+			for(int i=0; i<4; i++){
+				int nfn = fn+dir[i][0], nsn = sn+dir[i][1];
+				if(nfn<0 || nsn<0 || nfn>=n || nsn>=n || lab[nfn][nsn]!=-1 || map[nfn][nsn]==1) continue;
+				lab[nfn][nsn] = lab[fn][sn]+1;
+				if(map[nfn][nsn]==0){
+					pbirus++;
+					anss=lab[nfn][nsn];
 				}
-			}
-			while(!bbfs.empty()){
-				int fn=bbfs.front().first, sn=bbfs.front().second;
-				bbfs.pop();
-				bool flage=true;
-				for(int i=0; i<4; i++){
-					int nfn=fn+dir[i][0],nsn=sn+dir[i][1];
-					if(nfn<0 || nsn<0 || nfn>=n || nsn>=n || lab[nfn][nsn] || map[nfn][nsn]!=2) continue;
-					flage=false;
-					lab[nfn][nsn]=true;
-					bbfs.push({nfn,nsn});
-				}
-				if(flage){
-					bool flage=false;
-					for(int i=0; i<4; i++){
-						int nfn=fn+dir[i][0],nsn=sn+dir[i][1];
-						if(nfn<0 || nsn<0 || nfn>=n || nsn>=n || lab[nfn][nsn] || map[nfn][nsn] != 0) continue;
-						flage=true;
-						break;
-					}
-					if(flage) bfs.push({fn,sn});
-				}
-			}
-			if(!bfs.empty()) anss++;
-		}
-		bool flag = true;
-		for(int i=0; i<n; i++){
-			if(!flag) break;
-			for(int j=0; j<n; j++){
-				if(map[i][j]>0) continue;
-				if(!lab[i][j]){
-					flag=false;
-					break;
-				}
+				bfs.push({nfn,nsn});
 			}
 		}
-		if(flag){
+		if(ep==pbirus){
 			if(minn>anss) minn=anss;
 		}
 		return;
@@ -93,6 +59,9 @@ int main(){
 	for(int i=0; i<n; i++){
 		for(int j=0; j<n; j++){
 			cin>>map[i][j];
+			if(map[i][j]==0){
+				ep++;
+			}
 			if(map[i][j]==2){
 				birus.push_back({i,j});
 			}
