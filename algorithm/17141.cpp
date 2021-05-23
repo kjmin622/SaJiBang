@@ -4,10 +4,8 @@
 #include<string.h>
 using namespace std;
 
-//21.5.23 틀린 TC를 못찾겠다...
-
 int map[50][50], dir[4][2]={{1,0},{-1,0},{0,1},{0,-1}}, n, m, minn = 2e7; bool lab[50][50];
-queue<pair<int,int> > bfs,bbfs;
+queue<pair<int,int> > bfs;
 vector<int> ord;
 vector<vector<int> > order;
 vector<pair<int,int> > birus;
@@ -31,30 +29,7 @@ void combi(int N, int r){
 					int nfn=fn+dir[i][0],nsn=sn+dir[i][1];
 					if(nfn<0 || nsn<0 || nfn>=n || nsn>=n || lab[nfn][nsn] || map[nfn][nsn]==1) continue;
 					lab[nfn][nsn]=true;
-					if(map[nfn][nsn]==2) bbfs.push({nfn,nsn});
-					else bfs.push({nfn,nsn});
-				}
-			}
-			while(!bbfs.empty()){
-				int fn=bbfs.front().first, sn=bbfs.front().second;
-				bbfs.pop();
-				bool flage=true;
-				for(int i=0; i<4; i++){
-					int nfn=fn+dir[i][0],nsn=sn+dir[i][1];
-					if(nfn<0 || nsn<0 || nfn>=n || nsn>=n || lab[nfn][nsn] || map[nfn][nsn]!=2) continue;
-					flage=false;
-					lab[nfn][nsn]=true;
-					bbfs.push({nfn,nsn});
-				}
-				if(flage){
-					bool flage=false;
-					for(int i=0; i<4; i++){
-						int nfn=fn+dir[i][0],nsn=sn+dir[i][1];
-						if(nfn<0 || nsn<0 || nfn>=n || nsn>=n || lab[nfn][nsn] || map[nfn][nsn] != 0) continue;
-						flage=true;
-						break;
-					}
-					if(flage) bfs.push({fn,sn});
+					bfs.push({nfn,nsn});
 				}
 			}
 			if(!bfs.empty()) anss++;
@@ -63,7 +38,7 @@ void combi(int N, int r){
 		for(int i=0; i<n; i++){
 			if(!flag) break;
 			for(int j=0; j<n; j++){
-				if(map[i][j]>0) continue;
+				if(map[i][j]==1) continue;
 				if(!lab[i][j]){
 					flag=false;
 					break;
@@ -94,6 +69,7 @@ int main(){
 		for(int j=0; j<n; j++){
 			cin>>map[i][j];
 			if(map[i][j]==2){
+				map[i][j]=0;
 				birus.push_back({i,j});
 			}
 		}
