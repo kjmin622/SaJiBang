@@ -7,23 +7,20 @@ int main(){
 	ios_base :: sync_with_stdio(false); 
 	cin.tie(NULL); 
 	cout.tie(NULL);
-	int n, maxi=0, already=0; cin>>n;
-	vector<int> v(n+1), se, ans;
+	
+	int n, maxi=0; 
+	cin>>n;
+	vector<int> v(n+1), ans;
 	vector<bool> visited(n+1);
 	for(int i=1; i<=n; i++){
 		cin>>v[i];
 		if(i==v[i]){
-			already++;
-			se.push_back(i);
+			maxi++;
 			ans.push_back(i);
 			visited[i]=true;
 		}
 	}
-	maxi+=already;
-	/*
-	1 2 3 4 5 6 7
-	3 1 1 5 5 4 6
-	*/
+
 	for(int i=1; i<=n; i++){
 		int counter = 0, idx=i;
 		vector<int> tmp;
@@ -52,10 +49,3 @@ int main(){
 	}
 	
 }
-
-/*
-1 2 3 4 5 6 7
-2 6 5 4 3 2 7
-
-
-*/
