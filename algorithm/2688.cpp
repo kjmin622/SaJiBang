@@ -6,14 +6,13 @@ int main(){
 	cin.tie(NULL); 
 	cout.tie(NULL);
 	
-	long long int n, t, dp[65][10], ans[65]={0,10,55};
+	long long int n, t, dp[65][10], ans[65]={0,10};
 	
 	for(int i=0; i<10; i++){
 		dp[1][i]=1;
-		dp[2][i]=10-i;
 	}
 	
-	for(int i=3; i<=64; i++){
+	for(int i=2; i<=64; i++){
 		dp[i][0] = ans[i-1];
 		ans[i]+=dp[i][0];
 		for(int j=1; j<10; j++){
@@ -23,6 +22,7 @@ int main(){
 	}
 	cin>>t;
 	while(t--){
-		cin>>n; cout<<ans[n]<<'\n';
+		cin>>n; 
+		cout<<ans[n]<<'\n';
 	}
 }
