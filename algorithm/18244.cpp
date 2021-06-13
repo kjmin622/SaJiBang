@@ -2,6 +2,7 @@
 using namespace std;
 typedef long long int lli;
 int main(){
+	// 아직 못품
 	int n; cin>>n;
 	lli dp[100][10][6]={};
 	for(int i=0; i<10; i++){
